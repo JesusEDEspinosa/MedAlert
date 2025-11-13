@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 data class Reminder (
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val nombreMedicamento: String,
-    val descripcion: String?,
+    val descripcion: String,
     val dosis: String?,
     val formaConsumo: String?,
     val imagenUri: String?,
