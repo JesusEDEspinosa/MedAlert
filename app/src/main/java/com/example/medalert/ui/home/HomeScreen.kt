@@ -42,7 +42,7 @@ import com.example.medalert.ui.theme.AppTypography
 @Composable
 fun HomeScreen(
     navController: NavController,
-    viewModel: HomeViewModel = viewModel(factory = HomeViewModelProvider.Factory)
+    viewModel: HomeViewModel = viewModel(factory = HomeViewModelProvider.Factory),
 ) {
     val reminders by viewModel.reminderUiState.collectAsState()
 
@@ -51,16 +51,17 @@ fun HomeScreen(
         floatingActionButton = {
             FloatingActionButton(
                 onClick = { navController.navigate(ReminderEntryDestination.route) },
-                containerColor = MaterialTheme.colorScheme.primary
+                containerColor = MaterialTheme.colorScheme.primary,
             ) {
                 Icon(Icons.Default.Add, contentDescription = "Agregar recordatorio")
             }
-        }
+        },
     ) { innerPadding ->
         Column(
-            modifier = Modifier
-                .padding(innerPadding)
-                .fillMaxSize()
+            modifier =
+                Modifier
+                    .padding(innerPadding)
+                    .fillMaxSize(),
         ) {
             SearchBar()
             ReminderList(reminders)
@@ -73,15 +74,15 @@ fun TopBar() {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier
-            .statusBarsPadding()
-            .fillMaxWidth()
+        modifier =
+            Modifier
+                .statusBarsPadding()
+                .fillMaxWidth(),
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Spacer(modifier = Modifier.width(8.dp))
             Text("MedAlert", style = AppTypography.titleLarge)
         }
-
     }
 }
 
@@ -91,17 +92,18 @@ fun SearchBar() {
         value = "",
         onValueChange = { },
         placeholder = { Text("Buscar") },
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp)
-            .clip(RoundedCornerShape(16.dp))
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+                .clip(RoundedCornerShape(16.dp)),
     )
 }
 
 @Composable
 fun ReminderList(
     reminders: List<Reminder>,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     if (reminders.isEmpty()) {
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
@@ -110,7 +112,7 @@ fun ReminderList(
     } else {
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(20.dp),
-            modifier = Modifier.padding(16.dp)
+            modifier = Modifier.padding(16.dp),
         ) {
             items(reminders) { reminder ->
                 ReminderCard(reminder, modifier)
@@ -120,12 +122,16 @@ fun ReminderList(
 }
 
 @Composable
-fun ReminderCard(reminder: Reminder, modifier: Modifier = Modifier) {
+fun ReminderCard(
+    reminder: Reminder,
+    modifier: Modifier = Modifier,
+) {
     val reminder = reminder
     Card(
-        modifier = Modifier
-            .fillMaxWidth(),
-        border = BorderStroke(1.dp, Color.LightGray)
+        modifier =
+            Modifier
+                .fillMaxWidth(),
+        border = BorderStroke(1.dp, Color.LightGray),
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(reminder.nombreMedicamento, style = MaterialTheme.typography.titleMedium)

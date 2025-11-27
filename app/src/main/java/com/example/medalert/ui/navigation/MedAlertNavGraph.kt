@@ -11,15 +11,13 @@ import com.example.medalert.ui.home.HomeScreen
 import com.example.medalert.ui.reminder.ReminderEntryScreen
 
 @Composable
-fun MedAlertNavGraph(
-    modifier: Modifier = Modifier
-) {
+fun MedAlertNavGraph(modifier: Modifier = Modifier) {
     val navController = rememberNavController()
 
     NavHost(
         navController = navController,
         startDestination = HomeDestination.route,
-        modifier = modifier
+        modifier = modifier,
     ) {
         composable(route = HomeDestination.route) {
             HomeScreen(navController = navController)

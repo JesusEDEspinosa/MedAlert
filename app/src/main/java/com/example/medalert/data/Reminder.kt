@@ -4,7 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "reminders")
-data class Reminder (
+data class Reminder(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val nombreMedicamento: String,
     val descripcion: String,
@@ -12,6 +12,5 @@ data class Reminder (
     val formaConsumo: String?,
     val imagenUri: String?,
     val activo: Boolean = true,
-    val fechaCreado: Long = System.currentTimeMillis()
-
+    val fechaCreado: Long = System.currentTimeMillis(),
 )

@@ -8,9 +8,8 @@ import androidx.room.RoomDatabase
 @Database(
     entities = [Reminder::class],
     version = 1,
-    exportSchema = false
+    exportSchema = false,
 )
-
 abstract class MedAlertDatabase : RoomDatabase() {
     abstract fun reminderDao(): ReminderDao
 
@@ -18,13 +17,13 @@ abstract class MedAlertDatabase : RoomDatabase() {
         @Volatile
         private var INSTANCE: MedAlertDatabase? = null
 
-        fun getDatabase(context: Context): MedAlertDatabase {
-            return INSTANCE ?: synchronized(this) {
-                Room.databaseBuilder(context, MedAlertDatabase::class.java, "med_alert_database")
+        fun getDatabase(context: Context): MedAlertDatabase =
+            INSTANCE ?: synchronized(this) {
+                Room
+                    .databaseBuilder(context, MedAlertDatabase::class.java, "med_alert_database")
                     .fallbackToDestructiveMigration(true)
                     .build()
                     .also { INSTANCE = it }
             }
-        }
     }
 }

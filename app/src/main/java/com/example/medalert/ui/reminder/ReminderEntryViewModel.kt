@@ -10,7 +10,9 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class ReminderEntryViewModel(private val medAlertRepository: MedAlertRepository) : ViewModel() {
+class ReminderEntryViewModel(
+    private val medAlertRepository: MedAlertRepository,
+) : ViewModel() {
     private val _reminderUiState = MutableStateFlow(ReminderUiState())
     val reminderUiState: StateFlow<ReminderUiState> = _reminderUiState.asStateFlow()
 
@@ -20,16 +22,17 @@ class ReminderEntryViewModel(private val medAlertRepository: MedAlertRepository)
 
     fun saveRaminder() {
         viewModelScope.launch {
-            val reminder = Reminder(
-                id = reminderUiState.value.id,
-                nombreMedicamento = reminderUiState.value.nombreMedicamento,
-                descripcion = reminderUiState.value.descripcion,
-                dosis = reminderUiState.value.dosis,
-                formaConsumo = reminderUiState.value.formaConsumo,
-                imagenUri = reminderUiState.value.imagenUri,
-                activo = reminderUiState.value.activo,
-                fechaCreado = reminderUiState.value.fechaCreado
-            )
+            val reminder =
+                Reminder(
+                    id = reminderUiState.value.id,
+                    nombreMedicamento = reminderUiState.value.nombreMedicamento,
+                    descripcion = reminderUiState.value.descripcion,
+                    dosis = reminderUiState.value.dosis,
+                    formaConsumo = reminderUiState.value.formaConsumo,
+                    imagenUri = reminderUiState.value.imagenUri,
+                    activo = reminderUiState.value.activo,
+                    fechaCreado = reminderUiState.value.fechaCreado,
+                )
 
             medAlertRepository.insertReminder(reminder)
         }
@@ -44,5 +47,5 @@ data class ReminderUiState(
     val formaConsumo: String = "Oral",
     val activo: Boolean = true,
     val imagenUri: String? = null,
-    val fechaCreado: Long = System.currentTimeMillis()
+    val fechaCreado: Long = System.currentTimeMillis(),
 )

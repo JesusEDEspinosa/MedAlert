@@ -38,22 +38,21 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.medalert.ui.ReminderEntryViewModelProvider
 
 @Composable
-fun ReminderEntryScreen (
+fun ReminderEntryScreen(
     navigateBack: () -> Unit,
     onNavigateUp: () -> Unit = navigateBack,
-    viewModel: ReminderEntryViewModel = viewModel(factory = ReminderEntryViewModelProvider.Factory)
-)
-{
+    viewModel: ReminderEntryViewModel = viewModel(factory = ReminderEntryViewModelProvider.Factory),
+) {
     val reminderUiState by viewModel.reminderUiState.collectAsState()
     val context = LocalContext.current
 
     Surface(
         modifier = Modifier.fillMaxSize(),
-        color = MaterialTheme.colorScheme.background
+        color = MaterialTheme.colorScheme.background,
     ) {
         Scaffold(
             topBar = {
-                TopBar( onNavigateUp)
+                TopBar(onNavigateUp)
             },
             floatingActionButton = {
                 ExtendedFloatingActionButton(
@@ -62,45 +61,45 @@ fun ReminderEntryScreen (
                     onClick = {
                         viewModel.saveRaminder()
                         navigateBack()
-                    }
+                    },
                 )
-            }
+            },
         ) { innerPadding ->
             NoteEntryForm(
                 reminderUiState,
                 onValueChange = viewModel::updateUiState,
-                modifier = Modifier.padding(innerPadding)
+                modifier = Modifier.padding(innerPadding),
             )
         }
     }
 }
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopBar(
-    onNavigateUp: () -> Unit
-) {
+fun TopBar(onNavigateUp: () -> Unit) {
     TopAppBar(
-        title = { Text( "MedAlert")  },
+        title = { Text("MedAlert") },
         navigationIcon = {
             IconButton(onClick = onNavigateUp) {
                 Icon(Icons.Default.ArrowBack, contentDescription = "Volver")
             }
         },
-        modifier = Modifier
-            .statusBarsPadding()
+        modifier =
+            Modifier
+                .statusBarsPadding(),
     )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NoteEntryForm (
+fun NoteEntryForm(
     reminderUiState: ReminderUiState,
     onValueChange: (ReminderUiState) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
-    Column (
+    Column(
         modifier = modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.spacedBy(12.dp)
+        verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
         NameCard(
             reminderUiState.nombreMedicamento,
@@ -108,7 +107,7 @@ fun NoteEntryForm (
             reminderUiState,
             "Nombre del medicamento",
             "Escribe el nombre del medicamento",
-            modifier = Modifier
+            modifier = Modifier,
         )
 
         DescriptionCard(
@@ -121,7 +120,6 @@ fun NoteEntryForm (
     }
 }
 
-
 @Composable
 fun NameCard(
     value: String,
@@ -129,41 +127,45 @@ fun NameCard(
     reminderUiState: ReminderUiState,
     text: String,
     placeholder: String,
-    modifier: Modifier = Modifier
-){
-    Card (
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(12.dp),
+    modifier: Modifier = Modifier,
+) {
+    Card(
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(12.dp),
         elevation = CardDefaults.cardElevation(8.dp),
     ) {
-
-        Column (
-            modifier = Modifier.fillMaxWidth()
+        Column(
+            modifier = Modifier.fillMaxWidth(),
         ) {
             Text(
                 text = text,
                 style = MaterialTheme.typography.labelSmall,
-                modifier = Modifier
-                    .padding(16.dp, 16.dp, 0.dp)
-                    .fillMaxWidth()
+                modifier =
+                    Modifier
+                        .padding(16.dp, 16.dp, 0.dp)
+                        .fillMaxWidth(),
             )
             OutlinedTextField(
                 value = value,
                 onValueChange = { onValueChange(reminderUiState.copy(nombreMedicamento = it)) },
                 placeholder = { Text(placeholder) },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(8.dp)
-                    .clip(RoundedCornerShape(16.dp)),
-                colors = OutlinedTextFieldDefaults.colors(
-                    focusedBorderColor = Color.Transparent,
-                    unfocusedBorderColor = Color.Transparent
-                ),
-                keyboardOptions = KeyboardOptions.Default.copy(
-                    capitalization = KeyboardCapitalization.Sentences,
-                    imeAction = ImeAction.Next
-                )
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(8.dp)
+                        .clip(RoundedCornerShape(16.dp)),
+                colors =
+                    OutlinedTextFieldDefaults.colors(
+                        focusedBorderColor = Color.Transparent,
+                        unfocusedBorderColor = Color.Transparent,
+                    ),
+                keyboardOptions =
+                    KeyboardOptions.Default.copy(
+                        capitalization = KeyboardCapitalization.Sentences,
+                        imeAction = ImeAction.Next,
+                    ),
             )
         }
     }
@@ -176,43 +178,46 @@ fun DescriptionCard(
     reminderUiState: ReminderUiState,
     text: String,
     placeholder: String,
-    modifier: Modifier = Modifier
-){
-    Card (
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(12.dp),
+    modifier: Modifier = Modifier,
+) {
+    Card(
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(12.dp),
         elevation = CardDefaults.cardElevation(8.dp),
     ) {
-
-        Column (
-            modifier = Modifier.fillMaxWidth()
+        Column(
+            modifier = Modifier.fillMaxWidth(),
         ) {
             Text(
                 text = text,
                 style = MaterialTheme.typography.labelSmall,
-                modifier = Modifier
-                    .padding(16.dp, 16.dp, 0.dp)
-                    .fillMaxWidth()
+                modifier =
+                    Modifier
+                        .padding(16.dp, 16.dp, 0.dp)
+                        .fillMaxWidth(),
             )
             OutlinedTextField(
                 value = value,
                 onValueChange = { onValueChange(reminderUiState.copy(descripcion = it)) },
                 placeholder = { Text(placeholder) },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(8.dp)
-                    .clip(RoundedCornerShape(16.dp)),
-                colors = OutlinedTextFieldDefaults.colors(
-                    focusedBorderColor = Color.Transparent,
-                    unfocusedBorderColor = Color.Transparent
-                ),
-                keyboardOptions = KeyboardOptions.Default.copy(
-                    capitalization = KeyboardCapitalization.Sentences,
-                    imeAction = ImeAction.Next
-                )
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(8.dp)
+                        .clip(RoundedCornerShape(16.dp)),
+                colors =
+                    OutlinedTextFieldDefaults.colors(
+                        focusedBorderColor = Color.Transparent,
+                        unfocusedBorderColor = Color.Transparent,
+                    ),
+                keyboardOptions =
+                    KeyboardOptions.Default.copy(
+                        capitalization = KeyboardCapitalization.Sentences,
+                        imeAction = ImeAction.Next,
+                    ),
             )
         }
     }
 }
-

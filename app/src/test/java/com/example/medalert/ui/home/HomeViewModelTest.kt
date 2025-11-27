@@ -14,7 +14,6 @@ import org.junit.Rule
 import org.junit.Test
 
 class HomeViewModelTest {
-
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
 
@@ -25,43 +24,60 @@ class HomeViewModelTest {
     private lateinit var viewModel: HomeViewModel
 
     @Test
-    fun `reminderUiState expone la lista de recordatorios del repositorio`() = runTest {
-        // GIVEN: Preparamos datos de prueba
-        val testReminders = listOf(
-            Reminder(id = 1, nombreMedicamento = "Aspirina", descripcion = "Para el dolor", dosis = "100mg", formaConsumo = "Oral", imagenUri = null),
-            Reminder(id = 2, nombreMedicamento = "Vitamina C",  descripcion = "Para la salud", dosis = "500mg", formaConsumo = "Capsula", imagenUri = null)
-        )
+    fun `reminderUiState expone la lista de recordatorios del repositorio`() =
+        runTest {
+            // GIVEN: Preparamos datos de prueba
+            val testReminders =
+                listOf(
+                    Reminder(
+                        id = 1,
+                        nombreMedicamento = "Aspirina",
+                        descripcion = "Para el dolor",
+                        dosis = "100mg",
+                        formaConsumo = "Oral",
+                        imagenUri = null,
+                    ),
+                    Reminder(
+                        id = 2,
+                        nombreMedicamento = "Vitamina C",
+                        descripcion = "Para la salud",
+                        dosis = "500mg",
+                        formaConsumo = "Capsula",
+                        imagenUri = null,
+                    ),
+                )
 
-        // Entrenamos al mock: Cuando pidan todos los recordatorios, devuelve un Flow con nuestra lista
-        every { medAlertRepository.getAllReminders() } returns flowOf(testReminders)
+            // Entrenamos al mock: Cuando pidan todos los recordatorios, devuelve un Flow con nuestra lista
+            every { medAlertRepository.getAllReminders() } returns flowOf(testReminders)
 
-        // Inicializamos el ViewModel
-        viewModel = HomeViewModel(medAlertRepository)
+            // Inicializamos el ViewModel
+            viewModel = HomeViewModel(medAlertRepository)
 
-        // WHEN: Activamos el flujo
-        // Creamos una corrutina en segundo plano para "escuchar" y mantener vivo el flujo durante el test.
-        backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) {
-            viewModel.reminderUiState.collect {}
+            // WHEN: Activamos el flujo
+            // Creamos una corrutina en segundo plano para "escuchar" y mantener vivo el flujo durante el test.
+            backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) {
+                viewModel.reminderUiState.collect {}
+            }
+
+            // THEN: Verificamos el valor actual del StateFlow
+            assertEquals(testReminders, viewModel.reminderUiState.value)
         }
-
-        // THEN: Verificamos el valor actual del StateFlow
-        assertEquals(testReminders, viewModel.reminderUiState.value)
-    }
 
     @Test
-    fun `reminderUiState inicia con lista vacia si el repositorio aun no emite`() = runTest {
-        // GIVEN: Un repositorio que devuelve un flujo vacío o pendiente (simulado aquí con lista vacía inicial)
-        every { medAlertRepository.getAllReminders() } returns flowOf(emptyList())
+    fun `reminderUiState inicia con lista vacia si el repositorio aun no emite`() =
+        runTest {
+            // GIVEN: Un repositorio que devuelve un flujo vacío o pendiente (simulado aquí con lista vacía inicial)
+            every { medAlertRepository.getAllReminders() } returns flowOf(emptyList())
 
-        // WHEN: Inicializamos
-        viewModel = HomeViewModel(medAlertRepository)
+            // WHEN: Inicializamos
+            viewModel = HomeViewModel(medAlertRepository)
 
-        // Activamos el flujo
-        backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) {
-            viewModel.reminderUiState.collect {}
+            // Activamos el flujo
+            backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) {
+                viewModel.reminderUiState.collect {}
+            }
+
+            // THEN: Debería ser una lista vacía
+            assertEquals(emptyList<Reminder>(), viewModel.reminderUiState.value)
         }
-
-        // THEN: Debería ser una lista vacía
-        assertEquals(emptyList<Reminder>(), viewModel.reminderUiState.value)
-    }
 }

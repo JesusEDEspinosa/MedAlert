@@ -8,21 +8,23 @@ import com.example.medalert.ui.home.HomeViewModel
 import com.example.medalert.ui.reminder.ReminderEntryViewModel
 
 object HomeViewModelProvider {
-    val Factory = viewModelFactory {
-        initializer {
-            val application = this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as MedAlertApplication
-            val repository = application.container.medAlertRepository
-            HomeViewModel(repository)
+    val Factory =
+        viewModelFactory {
+            initializer {
+                val application = this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as MedAlertApplication
+                val repository = application.container.medAlertRepository
+                HomeViewModel(repository)
+            }
         }
-    }
 }
 
 object ReminderEntryViewModelProvider {
-    val Factory = viewModelFactory {
-        initializer {
-            val application = this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as MedAlertApplication
-            val repository = application.container.medAlertRepository
-            ReminderEntryViewModel(repository)
+    val Factory =
+        viewModelFactory {
+            initializer {
+                val application = this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as MedAlertApplication
+                val repository = application.container.medAlertRepository
+                ReminderEntryViewModel(repository)
+            }
         }
-    }
 }
